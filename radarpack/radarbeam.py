@@ -213,7 +213,7 @@ class radarspecs:
                 self.dec= - 30.*deg
                 self.ha= 0. #
         elif fload!='':
-            fp = np.load(fload)
+            fp = np.load(fload, encoding='bytes',allow_pickle=True)
             self.comb4q_arr = fp['comb4q_arr'][0]
             self.wide_comb4q_arr = fp['wide_comb4q_arr'][0]
             self.h0 = fp['h0'][0]
@@ -259,9 +259,9 @@ class radarspecs:
                 beam_pattern = beam_patterns[Bname]
                 BnameAntenna = Antenna_Beam(Bname,self, wide_beam_pattern,
                         beam_pattern,
-                        beam['Txdir'], beam['Tydir'], beam['el'],beam['az'],
-                        beam['TxComb'], beam['RxComb'], beam['dir_mode'],
-                        beam['dB_threshold'],beam['Rx_order'])
+                        beam[b'Txdir'], beam[b'Tydir'], beam[b'el'],beam[b'az'],
+                        beam[b'TxComb'], beam[b'RxComb'], beam[b'dir_mode'],
+                        beam[b'dB_threshold'],beam[b'Rx_order'])
                 self.beam_pattern.update({Bname:BnameAntenna})
             fp.close()
         else:
