@@ -305,7 +305,7 @@ class radarspecs:
         return self.beam_pattern[Bname]
 
     def get_beam_names(self):
-        return self.beam_pattern.keys()
+        return list(self.beam_pattern.keys())
 
     def get_beam_names_ordered(self):
         oindex = []
