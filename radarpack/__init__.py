@@ -2,4 +2,4 @@
 radarpack
 """
 
-__all__=['radarpack']
+__all__=['radarbeam']
