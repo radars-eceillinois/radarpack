@@ -597,7 +597,7 @@ class radarspecs:
         self.__update_exp_array(newAname, newApol)
 
     def create_beam_aspect_angle_grid(self, N,N2, yyyymmdd, ranges_km, xp_overs_fact=1.,
-            yp_overs_fact=1., verbose=False, use_fortran_wrap=False):
+            yp_overs_fact=1., verbose=False ):
         """
         Create grid of direction cosines ThetaX, ThetaY
         yyyymmdd : year, month and day separated by dots, e.g 2014.10.12
@@ -634,8 +634,7 @@ class radarspecs:
         if self.rotation_xy == "opt_rot":
             rtarget = 300. * self.uo # from Antenna
             xyz = self.xyz0 + rtarget # from center of Earth
-            r,lat,lon,aspect,B = self.aspect_angle(self.fyear,xyz,
-                    use_fortran_wrap)
+            r,lat,lon,aspect,B = self.aspect_angle(self.fyear,xyz)
             mag_B = np.sqrt(np.dot(B,B))
             mag_uy = np.sqrt(np.dot(self.uy,self.uy))
             opt_rot = np.arccos(np.dot(self.uy,B)/mag_B/mag_uy)
@@ -661,8 +660,7 @@ class radarspecs:
             for row,Xp_row in enumerate(self.ThetaX):
                 for col,Xp in enumerate(Xp_row):
                     [r,lon,lat,dec,ha,aspect,B] = self.aspect_txty(self.fyear,
-                            current_range, self.ThetaX[row,col], self.ThetaY[row,col],
-                            use_fortran_wrap)
+                            current_range, self.ThetaX[row,col], self.ThetaY[row,col])
                     self.aspects[i,row,col] = aspect * 180. / np.pi
                     self.B_xyz[:,i,row,col] = B
 
@@ -766,7 +764,7 @@ class radarspecs:
         aspect = np.arccos(np.dot(u_B, u_rr))
         return r,lat,lon,aspect,B
 
-    def aspect_txty(self,year,rr,tx,ty,use_fortran_wrap=False):
+    def aspect_txty(self,year,rr,tx,ty):
         # returns magnetic aspect angle and geocentric coordinates of a target
         # tracked by jro at
         # range rr (km)
@@ -777,11 +775,11 @@ class radarspecs:
         #geocentric coordinates of target
         xyz = self.xyz0 + rr*(tx*self.ux + ty*self.uy + tz*self.uo)
 
-        [r,lat,lon,aspect,B] = self.aspect_angle(year,xyz,use_fortran_wrap)
+        [r,lat,lon,aspect,B] = self.aspect_angle(year,xyz)
         [dec,ha] = self.xyz2dec_ha(xyz - self.xyz0)
         return r,lon,lat,dec,ha,aspect,B
 
-    def aspect_elaz(self,year,rr,el,az,use_fortran_wrap=False):
+    def aspect_elaz(self,year,rr,el,az):
         # returns magnetic aspect angle and geocentric coordinates of a target
         # tracked by jro at
         # range       rr (km)
@@ -794,6 +792,6 @@ class radarspecs:
         #geocentric coordinates of target :
         xyz = self.xyz0 + rr*(tx * self.east0 + ty*self.north0+tz*self.zenith0)
 
-        [r,lat,lon,aspect,B] = self.aspect_angle(year,xyz,use_fortran_wrap)
+        [r,lat,lon,aspect,B] = self.aspect_angle(year,xyz)
         [dec,ha] = self.xyz2dec_ha(xyz - self.xyz0)
         return r,lon,lat,dec,ha,aspect,B
