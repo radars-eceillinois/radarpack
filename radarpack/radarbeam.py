@@ -79,7 +79,6 @@ def blowup(arr,rep):            # enlarges square array arr by a factor rep
 # --------------------------------------------------------------
 import numpy as np
 from pyigrf.igrf import igrf
-igrf0 = igrf() # loading the latest coefficients
 
 eps=np.finfo(float).eps         # float resolution
 deg=np.pi/180.                  # to express angles in degree values
@@ -145,7 +144,10 @@ class radarspecs:
     IRIS@URBANA
     """
     def __init__(self,lat0=None,lon0=None,h0=None,location=None,fload='',dec=0.,ha=0.,
-            rotation_xy=0.):
+            rotation_xy=0.,igrf_file=None):
+
+        self.igrf0 = igrf(igrf_file) # loading the latest coefficients
+
         self.ph_arr_d = {}
         self.Uphs = {}
         self.ph_exp_d = {}
@@ -757,7 +759,7 @@ class radarspecs:
         else:
             rr = xyz - radar_xyz
         u_rr = rr / np.sqrt(np.dot(rr,rr))   # unit vector from radar to target
-        [bX,bY,bZ,bB] = igrf0.igrf_B(year, r - igrf0.a, lon/deg, lat/deg)
+        [bX,bY,bZ,bB] = self.igrf0.igrf_B(year, r - self.igrf0.a, lon/deg, lat/deg)
         bfield = np.array([bX,bY,bZ])
         B = bX*north + bY*east - bZ*radial
         u_B = B / np.sqrt(np.dot(B,B))
