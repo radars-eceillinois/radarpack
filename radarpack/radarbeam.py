@@ -214,6 +214,19 @@ class radarspecs:
                 self.h0 = 0.035
                 self.dec= - 30.*deg
                 self.ha= 0. #
+            elif self.location == "PFISR":
+                # source: https://amisr.com/amisr/about/about_pfisr/pfisr-specs/
+                self.lat0 = 65.12992 * deg
+                self.lon0 = -147.47104 * deg
+                self.h0 = 0.213
+                # to obtain dec and ha :
+                # pfisr0 = radarbeam.radarspecs(location="PFISR")
+                # xyz_target = pfisr0.elaz2xyz(1000,el=(90-real_tilt)*np.pi/180, az=real_rot*np.pi/180)
+                # dec_deg, ha_min = pfisr0.xyz2dec_ha(xyz_target - pfisr0.xyz0)
+                # dec_deg, ha_min
+                # = (79.73223212243532, 92.21660368556627)
+                self.dec= 79.73223212243532 * deg
+                self.ha= 92.21660368556627 * deg #
         elif fload!='':
             fp = np.load(fload, encoding='bytes',allow_pickle=True)
             self.comb4q_arr = fp['comb4q_arr'][0]
@@ -781,6 +794,22 @@ class radarspecs:
         [dec,ha] = self.xyz2dec_ha(xyz - self.xyz0)
         return r,lon,lat,dec,ha,aspect,B
 
+    def elaz2xyz(self,rr,el,az):
+        """
+        returns the xyz ECEF coordinates of a target specified by elevation and
+        azimuth and range from a radar.
+        # range       rr (km)
+        # elevation   el (rad above local tangent plane to ellipsoid)
+        # azimuth     az (rad east of local north)
+        """
+        tx = np.cos(el) * np.sin(az)        # direction cosines wrt east and north
+        ty = np.cos(el) * np.cos(az)
+        tz = np.sin(el)
+        #geocentric coordinates of target :
+        xyz = self.xyz0 + rr*(tx * self.east0 + ty*self.north0+tz*self.zenith0)
+
+        return xyz
+
     def aspect_elaz(self,year,rr,el,az):
         # returns magnetic aspect angle and geocentric coordinates of a target
         # tracked by jro at
@@ -788,11 +817,7 @@ class radarspecs:
         # elevation   el (rad above local tangent plane to ellipsoid)
         # azimuth     az (rad east of local north)
 
-        tx = np.cos(el) * np.sin(az)		# direction cosines wrt east and north
-        ty = np.cos(el) * np.cos(az)
-        tz = np.sin(el)
-        #geocentric coordinates of target :
-        xyz = self.xyz0 + rr*(tx * self.east0 + ty*self.north0+tz*self.zenith0)
+        xyz = self.elaz2xyz(rr,el,az)
 
         [r,lat,lon,aspect,B] = self.aspect_angle(year,xyz)
         [dec,ha] = self.xyz2dec_ha(xyz - self.xyz0)
