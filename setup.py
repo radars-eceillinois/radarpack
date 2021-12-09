@@ -25,8 +25,8 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    install_requires=['numpy','scipy',
-        'pyigrf @ git+https://github.com/radars-eceillinois/pyigrf.git'],
+    #install_requires=['numpy','scipy',
+    #    'pyigrf @ git+https://github.com/radars-eceillinois/pyigrf.git'],
     # Optional
     #package_data={'pyigrf': ['pyigrf/*.txt'],
     #                         },

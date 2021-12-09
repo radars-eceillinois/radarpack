@@ -22,7 +22,7 @@
 from __future__ import print_function
 from __future__ import division
 import numpy as np
-import pyigrf
+#import pyigrf
 
 def llh2xyz(latg,lon,h):
     # returns geocentric xyz coordinates (ECEF) in km of a target with
@@ -163,7 +163,8 @@ class radarspecs:
     def __init__(self,lat0=None,lon0=None,h0=None,location=None,fload='',dec=0.,ha=0.,
             rotation_xy=0.,igrf_file=None):
 
-        self.igrf0 = pyigrf.igrf_version(igrf_file) # loading the latest coefficients
+        self.igrf_file = igrf_file
+        #self.igrf0 = pyigrf.igrf_version(self.igrf_file) # loading the latest coefficients
 
         self.ph_arr_d = {}
         self.Uphs = {}
@@ -776,6 +777,10 @@ class radarspecs:
     def aspect_angle(self,year,xyz,radar_xyz=None):
         # returns the magnetic aspect angle (rad) of a target with
         # geocentric vector xyz defined in geocentric coordinates
+
+        # pyigrf temporarily put here. Move back after pip installable
+        import pyigrf
+        self.igrf0 = pyigrf.igrf_version(self.igrf_file) # loading the latest coefficients
 
         r   = np.sqrt(np.dot(xyz,xyz))    # from center of earth
         p   = np.sqrt(xyz[0]**2. + xyz[1]**2.)
