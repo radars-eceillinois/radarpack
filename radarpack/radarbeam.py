@@ -37,11 +37,28 @@ def llh2xyz(latg,lon,h):
     return x,y,z
 
 def xyz2llh(x,y,z):
-    # returns longitude 'lon', geodetic latitude 'lat', and height 'h'
-    # of position (x,y,z) defined in geocentric coordinate system (ECEF)
+    """Returns longitude 'lon', geodetic latitude 'lat', and height 'h'
+    of position (x,y,z) defined in geocentric coordinate system (ECEF)
 
-    # on Oct23,2013 by P. Reyes, adding the .all() in order to support
-    # arrays
+    Parameters
+    ----------
+    x : array_like or single number
+        ECEF x component in km
+    y : array_like or single number
+        ECEF y component in km
+    z : array_like or single number
+        ECEF z component in km
+
+    Returns
+    -------
+    lat : array_like or single number
+        geodetic latitude in rad
+    lon : array_like or single number
+        longitude in rad
+    h : array_like of single number
+        altitude in km
+
+    """
 
     p=np.sqrt(x**2.+y**2.)
     lon=np.arctan2(y,x)
