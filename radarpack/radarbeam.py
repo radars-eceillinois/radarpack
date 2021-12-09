@@ -21,6 +21,8 @@
 
 from __future__ import print_function
 from __future__ import division
+import numpy as np
+import pyigrf
 
 def llh2xyz(latg,lon,h):
     # returns geocentric xyz coordinates (ECEF) in km of a target with
@@ -77,8 +79,6 @@ def blowup(arr,rep):            # enlarges square array arr by a factor rep
     return arrl
 
 # --------------------------------------------------------------
-import numpy as np
-from pyigrf import igrf
 
 eps=np.finfo(float).eps         # float resolution
 deg=np.pi/180.                  # to express angles in degree values
@@ -146,7 +146,7 @@ class radarspecs:
     def __init__(self,lat0=None,lon0=None,h0=None,location=None,fload='',dec=0.,ha=0.,
             rotation_xy=0.,igrf_file=None):
 
-        self.igrf0 = igrf(igrf_file) # loading the latest coefficients
+        self.igrf0 = pyigrf.igrf_version(igrf_file) # loading the latest coefficients
 
         self.ph_arr_d = {}
         self.Uphs = {}
