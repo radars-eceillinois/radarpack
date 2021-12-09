@@ -26,7 +26,7 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     install_requires=['numpy','scipy',
-        'pyigrf @ git+https://github.com/illinoisrsssradar/pyigrf.git'],
+        'pyigrf @ git+https://github.com/radars-eceillinois/pyigrf.git'],
     # Optional
     #package_data={'pyigrf': ['pyigrf/*.txt'],
     #                         },
