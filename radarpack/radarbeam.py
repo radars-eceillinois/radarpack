@@ -78,7 +78,7 @@ def blowup(arr,rep):            # enlarges square array arr by a factor rep
 
 # --------------------------------------------------------------
 import numpy as np
-from pyigrf.igrf import igrf
+from pyigrf import igrf
 
 eps=np.finfo(float).eps         # float resolution
 deg=np.pi/180.                  # to express angles in degree values
