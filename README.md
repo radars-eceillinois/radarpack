@@ -3,9 +3,8 @@ module for calculating geometry parameters and magnetic aspect angle of radar ta
 
 Installation
 ------------
-After cloning this repository:
 
-    pip install .
+    pip install radarpack
 
 Examples
 --------
