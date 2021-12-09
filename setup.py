@@ -13,7 +13,7 @@ setuptools.setup(
     name="radarpack",
     version="0.0.1",
     author="Pablo Reyes",
-    author_email="pmreyes2@illinois.edu",
+    author_email="pablo.reyes@sri.com",
     description="Radar Tools",
     long_description=long_description,
     long_description_content_type="text/markdown",
